@@ -1,10 +1,13 @@
 package com.example.expensetrackerspring.controller;
 
+import com.example.expensetrackerspring.dto.CreateExpenseRequest;
+import com.example.expensetrackerspring.dto.ExpenseResponse;
 import com.example.expensetrackerspring.exception.ResourceNotFoundException;
 import com.example.expensetrackerspring.model.Expense;
 import com.example.expensetrackerspring.service.ExpenseService;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,6 +26,8 @@ public class ExpenseController {
     @Autowired
     ExpenseService expenseService;
 
+    ModelMapper modelMapper;
+
     @GetMapping
     public List<Expense> getAllExpenseRecords() {
         log.info("Listing All expense records." );
@@ -38,17 +43,17 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public ResponseEntity<Expense> createExpense(@Valid @RequestBody Expense expense) {
-        Expense createdExpense = expenseService.addExpense(expense);
-        log.info("Successfully created user with id: {} ",createdExpense.getId());
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdExpense);
+    public ResponseEntity<ExpenseResponse> createExpense(@Valid @RequestBody CreateExpenseRequest expenseRequest) {
+        Expense createdExpense = expenseService.addExpense(expenseRequest);
+        log.info("Successfully created expense with id: {} ",createdExpense.getId());
+        return new ResponseEntity<>(modelMapper.map(createdExpense, ExpenseResponse.class), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Expense> updateExpense(@PathVariable Long id, @RequestBody Expense expense) {
         try {
             Expense updatedExpense = expenseService.updateExpense(id, expense);
-            log.info("Successfully updated user with id: {} ",id );
+            log.info("Successfully updated expense with id: {} ",id );
             return ResponseEntity.ok(updatedExpense);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();

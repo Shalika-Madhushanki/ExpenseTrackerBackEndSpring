@@ -1,8 +1,10 @@
 package com.example.expensetrackerspring.service;
 
+import com.example.expensetrackerspring.dto.CreateExpenseRequest;
 import com.example.expensetrackerspring.model.Expense;
 import com.example.expensetrackerspring.repository.ExpenseRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +16,14 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class ExpenseService {
-    @Autowired
     ExpenseRepository expenseRepository;
+    ModelMapper modelMapper;
+
+    @Autowired
+    public ExpenseService(ExpenseRepository expenseRepository, ModelMapper modelMapper) {
+        this.expenseRepository = expenseRepository;
+        this.modelMapper = modelMapper;
+    }
 
     public List<Expense> findAllExpenses() {
         return expenseRepository.findAll();
@@ -25,7 +33,8 @@ public class ExpenseService {
         return expenseRepository.findById(id);
     }
 
-    public Expense addExpense(Expense expense) {
+    public Expense addExpense(CreateExpenseRequest expenseRequest) {
+        Expense expense = modelMapper.map(expenseRequest, Expense.class);
         return expenseRepository.save(expense);
     }
     public Expense updateExpense(Long id, Expense updatedExpense){
