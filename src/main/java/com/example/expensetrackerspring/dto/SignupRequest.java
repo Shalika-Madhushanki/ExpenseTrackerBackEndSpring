@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 public class SignupRequest {
-    @NotBlank(message = "Name cannot be blank")
     private String name;
 
     @NotBlank(message = "Email cannot be blank")
