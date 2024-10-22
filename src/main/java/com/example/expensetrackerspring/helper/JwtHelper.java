@@ -1,6 +1,7 @@
 package com.example.expensetrackerspring.helper;
 
 
+import com.example.expensetrackerspring.exception.AuthorisationException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -46,7 +47,9 @@ public class JwtHelper {
                     .parseSignedClaims(token)
                     .getPayload();
         } catch (ExpiredJwtException e) { // Invalid signature or expired token
-            throw new AccessDeniedException("Access denied: " + e.getMessage());
+            throw new AuthorisationException("Access denied: " + e.getMessage());
+        } catch (Exception e) {
+            throw new AuthorisationException(e.getMessage());
         }
     }
 

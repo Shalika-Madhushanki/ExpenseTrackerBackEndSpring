@@ -26,6 +26,7 @@ public class ExpenseController {
     @Autowired
     ExpenseService expenseService;
 
+    @Autowired
     ModelMapper modelMapper;
 
     @GetMapping

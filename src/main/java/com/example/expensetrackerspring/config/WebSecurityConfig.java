@@ -34,7 +34,6 @@ public class WebSecurityConfig {
         this.jwtAuthFilter = jwtAuthFilter;
     }
 
-
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -47,9 +46,7 @@ public class WebSecurityConfig {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//        Set permissions on endpoints
                 .authorizeHttpRequests(auth -> auth
-//            our public endpoints
                         .requestMatchers(HttpMethod.POST, "/api/auth/signup/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/auth/login/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/authentication-docs/**").permitAll()
@@ -57,21 +54,14 @@ public class WebSecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/actuator/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/actuator").permitAll()
                         .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()  // Allow Swagger access
-
-
-//            our private endpoints
                         .anyRequest().authenticated())
                 .headers(headers -> headers
                         .defaultsDisabled()
                         .frameOptions(HeadersConfigurer.FrameOptionsConfig::sameOrigin)
                 )
                 .authenticationManager(authenticationManager)
-                //        Add JWT token filter
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-
-
         return http.build();
-
     }
 
     @Bean
