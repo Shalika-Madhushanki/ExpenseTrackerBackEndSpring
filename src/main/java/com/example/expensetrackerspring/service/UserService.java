@@ -1,13 +1,10 @@
 package com.example.expensetrackerspring.service;
 
 import com.example.expensetrackerspring.dto.SignupRequest;
+import com.example.expensetrackerspring.exception.UserAlreadyExistsException;
 import com.example.expensetrackerspring.model.User;
 import com.example.expensetrackerspring.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +23,10 @@ public class UserService {
     }
 
 //    @Transactional
-    public void signup(SignupRequest signupRequest) throws Exception {
+    public void signup(SignupRequest signupRequest) {
         Optional<User> existingUser = userRepository.findByEmail(signupRequest.getEmail());
         if (existingUser.isPresent()) {
-            throw new Exception("User exist with the email"); // TODO: change exception
+            throw new UserAlreadyExistsException("User exist with the email. Please Login!"); // TODO: change exception
         }
         User user = new User(signupRequest.getName(), signupRequest.getEmail(), passwordEncoder.encode(signupRequest.getPassword()));
         userRepository.save(user);
