@@ -18,7 +18,8 @@ FROM openjdk:17.0.1-jdk-slim
 VOLUME /tmp
 
 # Copy the built JAR file from the build stage to the runtime stage
-COPY build/libs/expense-tracker-spring-0.0.1-SNAPSHOT.jar app.jar
+COPY --from=build /app/build/libs/expense-tracker-spring-0.0.1-SNAPSHOT.jar app.jar
+
 # Expose the application port
 EXPOSE 8080
 
