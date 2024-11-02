@@ -13,7 +13,7 @@ public class WebConfig {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/api/**")
-                        .allowedOrigins("https://localhost:5173", "https://shalika-madhushanki.github.io")
+                        .allowedOrigins("https://localhost:5173", "http://localhost:5173", "https://shalika-madhushanki.github.io", "https://expense-tracker-frontend-px2f.onrender.com")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);
