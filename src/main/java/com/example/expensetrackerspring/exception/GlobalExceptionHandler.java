@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
     @ExceptionHandler({ResourceNotFoundException.class})
     public ResponseEntity<ErrorResponse> handleResourceNotFoundException(ResourceNotFoundException exception) {
-        ErrorResponse response = new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(), exception.getMessage());
+        ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(), exception.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 

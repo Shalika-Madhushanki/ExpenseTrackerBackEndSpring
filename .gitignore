@@ -35,3 +35,12 @@ out/
 
 ### VS Code ###
 .vscode/
+/src/main/resources/keystore.p12
+src/.DS_Store
+src/main/java/com/example/expensetrackerspring/.DS_Store
+src/main/java/com/example/.DS_Store
+src/main/java/com/.DS_Store
+src/main/java/.DS_Store
+src/main/.DS_Store
+.DS_Store
+data/db.mv.db

@@ -1,6 +1,8 @@
 package com.example.expensetrackerspring.service;
 
 import com.example.expensetrackerspring.dto.CreateExpenseRequest;
+import com.example.expensetrackerspring.dto.UpdateExpenseRequest;
+import com.example.expensetrackerspring.exception.ResourceNotFoundException;
 import com.example.expensetrackerspring.model.Expense;
 import com.example.expensetrackerspring.repository.ExpenseRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -62,17 +64,14 @@ public class ExpenseService {
         Expense expense = modelMapper.map(expenseRequest, Expense.class);
         return expenseRepository.save(expense);
     }
-    public Expense updateExpense(Long id, Expense updatedExpense){
+    public Expense updateExpense(Long id, UpdateExpenseRequest updateRequest){
         Expense expense = expenseRepository.findById(id).orElseThrow();
-        expense.setDescription(updatedExpense.getDescription());
-        expense.setComments(updatedExpense.getComments());
-        expense.setCategory(updatedExpense.getCategory());
-        expense.setPaidBy(updatedExpense.getPaidBy());
-        expense.setAmount(updatedExpense.getAmount());
-        return expenseRepository.save(updatedExpense);
+        modelMapper.map(updateRequest, expense);
+        return expenseRepository.save(expense);
     }
 
     public void deleteExpense(Long id) {
+        Expense expense = expenseRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Expense Record with ID " + id + " not found!"));
         expenseRepository.deleteById(id);
     }
 

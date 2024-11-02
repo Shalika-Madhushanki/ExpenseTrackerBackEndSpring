@@ -71,6 +71,3 @@ public class WebSecurityConfig {
         return authenticationManagerBuilder.build();
     }
 }
-
-//to check user authentication
-//authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.email(), request.password()));

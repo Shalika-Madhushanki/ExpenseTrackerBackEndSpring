@@ -2,6 +2,7 @@ package com.example.expensetrackerspring.controller;
 
 import com.example.expensetrackerspring.dto.CreateExpenseRequest;
 import com.example.expensetrackerspring.dto.ExpenseResponse;
+import com.example.expensetrackerspring.dto.UpdateExpenseRequest;
 import com.example.expensetrackerspring.exception.ResourceNotFoundException;
 import com.example.expensetrackerspring.model.Expense;
 import com.example.expensetrackerspring.service.ExpenseService;
@@ -52,11 +53,11 @@ public class ExpenseController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Expense> updateExpense(@PathVariable Long id, @RequestBody Expense expense) {
+    public ResponseEntity<ExpenseResponse> updateExpense(@PathVariable Long id, @RequestBody UpdateExpenseRequest updateExpenseRequest) {
         try {
-            Expense updatedExpense = expenseService.updateExpense(id, expense);
+            Expense updatedExpense = expenseService.updateExpense(id, updateExpenseRequest);
             log.info("Successfully updated expense with id: {} ",id );
-            return ResponseEntity.ok(updatedExpense);
+            return new ResponseEntity<>(modelMapper.map(updatedExpense, ExpenseResponse.class), HttpStatus.OK);
         } catch (Exception e) {
             return ResponseEntity.notFound().build();
         }
