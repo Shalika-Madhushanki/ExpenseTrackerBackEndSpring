@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Slf4j
@@ -73,5 +74,17 @@ public class ExpenseController {
         Pageable pageable = PageRequest.of(page, size);
         log.info("Listing expense records for page: {}, size: {}", page, size );
         return expenseService.findAllByPage(pageable);
+    }
+
+    @GetMapping("/by-month")
+    public List<Expense> getAllExpenseRecordsByMonth(@RequestParam(value = "year") Integer year, @RequestParam(value = "month") Integer month) {
+        log.info("Listing All expense records for year: {} month: {}.", year, month );
+        return expenseService.findExpensesByMonth(year, month);
+    }
+
+    @GetMapping("/grouped")
+    public Map<String, List<Expense>> getAllExpenseRecordsGroupedByDate() {
+        log.info("Listing All expense records per month, grouped by date.");
+        return expenseService.getExpensesGroupedByDate();
     }
 }

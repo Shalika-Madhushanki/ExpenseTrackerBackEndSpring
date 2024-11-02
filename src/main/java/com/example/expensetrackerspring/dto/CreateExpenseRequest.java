@@ -1,8 +1,12 @@
 package com.example.expensetrackerspring.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
+
+import java.time.LocalDate;
 
 public class CreateExpenseRequest {
 
@@ -21,6 +25,9 @@ public class CreateExpenseRequest {
 
     @Min(value = 0, message = "Value should not be greater than or equals to 0")
     private Double amount;
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate date;
 
     public Long getId() {
         return id;
@@ -70,4 +77,11 @@ public class CreateExpenseRequest {
         this.amount = amount;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 }

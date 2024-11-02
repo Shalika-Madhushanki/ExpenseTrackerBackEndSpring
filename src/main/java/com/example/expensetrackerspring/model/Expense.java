@@ -1,10 +1,14 @@
 package com.example.expensetrackerspring.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.NonNull;
+
+import java.time.LocalDate;
 
 @Entity
 public class Expense {
@@ -26,6 +30,9 @@ public class Expense {
     @Min(value = 0, message = "Value should not be greater than or equals to 0")
     private Double amount;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    private LocalDate date;
+
     public Expense(String description, String comments, String category, String paidBy, Double amount) {
         this.description = description;
         this.comments = comments;
@@ -35,7 +42,6 @@ public class Expense {
     }
 
     public Expense() {
-
     }
 
     public String getDescription() {
@@ -86,4 +92,11 @@ public class Expense {
         return id;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 }
